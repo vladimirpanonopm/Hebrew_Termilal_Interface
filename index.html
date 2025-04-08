@@ -7,14 +7,17 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1 style="font-size: 20px;">🧠 Тренажёр иврито-русских терминов</h1>
+  <h1>🧠 Тренажёр иврито-русских терминов</h1>
   <div id="word">Загрузка...</div>
   <button id="repeat">🔈 Повторить</button>
   <div id="options"></div>
   <div id="feedback"></div>
   <button id="skip">🗑 Не повторять это слово</button>
+  <button id="restart" style="display:none">🔄 Начать заново</button>
+  <div id="progress">Выучено: 0 из 93</div>
 
 <script>
+  let allTerms = [];
   let terms = [];
   let audioMap = {};
   let current = null;
@@ -27,20 +30,41 @@
     }
   }
 
+  function updateProgress() {
+    const learned = allTerms.length - terms.length;
+    const total = allTerms.length;
+    document.getElementById("progress").innerText = `Выучено: ${learned} из ${total}`;
+  }
+
+  function fadeAndThen(callback) {
+    const wordEl = document.getElementById("word");
+    wordEl.classList.add("fade-out");
+    setTimeout(() => {
+      wordEl.classList.remove("fade-out");
+      callback();
+    }, 500);
+  }
+
   function showWord() {
+    updateProgress();
     if (terms.length === 0) {
       document.getElementById("word").innerText = "🎉 Все слова изучены!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("feedback").innerText = "";
+      document.getElementById("repeat").style.display = "none";
+      document.getElementById("skip").style.display = "none";
+      document.getElementById("restart").style.display = "inline-block";
       return;
     }
 
     current = terms[Math.floor(Math.random() * terms.length)];
-    document.getElementById("word").innerText = current[0];
+    const wordEl = document.getElementById("word");
+    wordEl.innerText = current[0];
     playAudio(current[0]);
 
     let options = [current];
-    while (options.length < 5) {
+    const numOptions = Math.min(5, terms.length);
+    while (options.length < numOptions) {
       let rand = terms[Math.floor(Math.random() * terms.length)];
       if (!options.includes(rand)) options.push(rand);
     }
@@ -56,15 +80,17 @@
       const btn = document.createElement("button");
       btn.className = "option";
       btn.innerText = opt[1];
+      btn.setAttribute("dir", "ltr");
       btn.onclick = () => {
         if (opt === current) {
           feedback.innerText = "✔ Верно";
           feedback.style.color = "green";
-           setTimeout(showWord, 1200);
+          terms = terms.filter(t => t !== current);
+          fadeAndThen(showWord);
         } else {
           feedback.innerText = "❌ Ответ: " + current[1];
           feedback.style.color = "red";
-           setTimeout(showWord, 6000);
+          setTimeout(showWord, 6000);
         }
       };
       optDiv.appendChild(btn);
@@ -73,7 +99,7 @@
 
   function skipWord() {
     terms = terms.filter(t => t !== current);
-    showWord();
+    fadeAndThen(showWord);
   }
 
   function repeatWord() {
@@ -82,12 +108,20 @@
 
   document.getElementById("repeat").onclick = repeatWord;
   document.getElementById("skip").onclick = skipWord;
+  document.getElementById("restart").onclick = () => {
+    terms = [...allTerms];
+    document.getElementById("repeat").style.display = "inline-block";
+    document.getElementById("skip").style.display = "inline-block";
+    document.getElementById("restart").style.display = "none";
+    showWord();
+  };
 
   Promise.all([
     fetch("terms.json").then(res => res.json()),
     fetch("audio_map.json").then(res => res.json())
   ]).then(([termsData, audioMapData]) => {
-    terms = termsData;
+    terms = [...termsData];
+    allTerms = [...termsData];
     audioMap = audioMapData;
     showWord();
   });

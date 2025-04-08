@@ -3,34 +3,82 @@ body {
   font-family: sans-serif;
   text-align: center;
   padding: 40px;
-  background-color: #f0f5fa;
+  background-image: url("texture2.jpg");
+  background-size: cover;
+  background-repeat: repeat;
+  background-position: center;
 }
+
+/* Общий стиль для блока со словом */
 #word {
   font-size: 2em;
-  margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
+
+/* Только для иврита — большой шрифт и правильное направление */
+#word[dir="rtl"] {
+  font-size: 6em;
+  font-weight: bold;
+  direction: rtl;
+  unicode-bidi: isolate;
+  font-family: "Arial", "Noto Sans Hebrew", sans-serif;
+}
+
+/* Блок с прогрессом — стиль как у кнопки "Повторить" */
+#progress {
+  font-size: 0.9em;
+  font-weight: normal;
+  margin-top: 30px;
+  font-family: sans-serif;
+}
+
 .option {
   display: block;
   margin: 10px auto;
-  padding: 10px 20px;
-  font-size: 1.3em;
+  padding: 14px 24px;
+  font-size: 1.25em;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  background-color: #dbeeff;
-  width: 30%;
+  background-color: #fee4c3;
+  width: 60%;
 }
+
+.option[dir="rtl"] {
+  font-size: 1.5em;
+  font-weight: bold;
+  font-family: "Arial", "Noto Sans Hebrew", sans-serif;
+}
+
+#repeat, #skip, #restart {
+  margin: 10px 6px;
+  padding: 10px 18px;
+  font-size: 0.9em;
+  border-radius: 12px;
+  border: none;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
 #skip {
   margin-top: 20px;
-  font-size: 0.9em;
-  background-color: #ffe0e0;
+  background-color: #e0e0e0;
 }
-#repeat {
-  margin-top: 5px;
-  font-size: 0.9em;
-  background-color: #e0ffe0;
+
+#repeat:hover, #skip:hover, #restart:hover {
+  background-color: #ccc;
 }
+
 #feedback {
   margin-top: 15px;
   font-weight: bold;
+  min-height: 1.5em;
+}
+
+/* Анимация исчезновения */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
