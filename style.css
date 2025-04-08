@@ -1,58 +1,36 @@
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: sans-serif;
   text-align: center;
-  background-color: #f3f7f9;
-  color: #333;
-  direction: rtl;
+  padding: 40px;
+  background-color: #f0f5fa;
 }
-.container {
-  max-width: 520px;
-  margin: 40px auto;
-  padding: 25px;
-  border: 2px solid #dce3ea;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(160, 180, 200, 0.2);
-}
-h1 {
-  direction: ltr;
-  margin-bottom: 25px;
-  color: #4d6a80;
-}
-#question {
-  font-size: 26px;
+#word {
+  font-size: 2em;
   margin-bottom: 10px;
-  color: #2a4c62;
 }
-#speak-btn {
-  font-size: 18px;
-  margin-bottom: 20px;
-  padding: 6px 16px;
-  background-color: #e6f0fa;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-}
-#options button {
+.option {
   display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  font-size: 18px;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 1.3em;
   border: none;
   border-radius: 8px;
-  background-color: #e6f0fa;
-  color: #333;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #dbeeff;
+  width: 30%;
 }
-#options button:hover {
-  background-color: #d0e5f5;
+#skip {
+  margin-top: 20px;
+  font-size: 0.9em;
+  background-color: #ffe0e0;
+}
+#repeat {
+  margin-top: 5px;
+  font-size: 0.9em;
+  background-color: #e0ffe0;
 }
 #feedback {
+  margin-top: 15px;
   font-weight: bold;
-  margin-top: 20px;
-  font-size: 18px;
-  min-height: 30px;
 }
